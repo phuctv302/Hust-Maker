@@ -1,0 +1,10 @@
+--- office-authoritative-server/package.json	2022-11-08 16:32:19.778972634 +0700
++++ package.json	2022-11-08 16:41:13.542331473 +0700
+@@ -2,7 +2,6 @@
+   "name": "office-authoritative-server",
+   "version": "1.0.0",
+   "description": "",
+-  "type": "module",
+   "main": "app.js",
+   "scripts": {
+     "build": "webpack --config webpack.config.js",

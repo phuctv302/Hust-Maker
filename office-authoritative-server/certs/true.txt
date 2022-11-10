@@ -1,0 +1,24 @@
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+C = US
+ST = CA
+L = Stanford
+O = Platform.inc
+OU = Product
+CN = *.landing
+commonName = *.landing
+emailAddress = admin@platform.inc
+[v3_req]
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = *.true.beta
+DNS.2 = *.true.pub
+DNS.3 = *.platform.beta
+DNS.4 = *.truecdn.beta
+

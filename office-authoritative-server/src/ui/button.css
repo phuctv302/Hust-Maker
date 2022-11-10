@@ -1,0 +1,21 @@
+.react-button {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #eeeeee;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px;
+	background-color: #eeeeee;
+	cursor: pointer;
+}
+
+.react-button:hover {
+	background-color: wheat;
+}
+
+.react-button--clicked {
+	background-color: wheat;
+}
+

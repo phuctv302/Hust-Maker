@@ -1,0 +1,121 @@
+
+
+<div id="canvas_container" style="width: 100%; height: 100%; position: relative;">
+	<canvas id="office"></canvas>
+</div>
+<div id="root"></div>
+
+<script src="/modules.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	console.log('wow');
+	let width = $(`#canvas_container`).width();
+	let height = $(`#canvas_container`).height();
+
+	let canvas = new MyLibrary.Canvas({
+		id: 'office',
+		width: width,
+		height: height,
+	});
+
+	let application = new MyLibrary.Application(canvas);
+	application.render();
+
+	fetch('https://localhost:8000/api/v1/maps')
+		.then((response) => response.json())
+		.then((data) => {
+			console.log(data);
+			for (let props of data.commands) {
+				let command_props = JSON.parse(props);
+				let command = MyLibrary.CommandFactory.create(application, command_props);
+				command.execute();
+			}
+		});
+
+	
+
+	// let props = {
+	// 	component_id: MyLibrary.uuid(),
+	// 	action: null,
+	// 	data: {
+	// 		x: 100,
+	// 		y: 100,
+	// 		width: 100,
+	// 		height: 100,
+	// 	},
+	// 	type: MyLibrary.CommandType.CREATION,
+	// 	mergeable: false,
+	// };
+	// let command = MyLibrary.CommandFactory.create(application, props);
+	// command.execute();
+
+	// props = {
+	// 	component_id: MyLibrary.uuid(),
+	// 	action: null,
+	// 	data: {
+	// 		shape: {
+	// 			x: 100,
+	// 			y: 300,
+	// 			width: 200,
+	// 			height: 100,
+	// 			angle: 4*Math.PI/3,
+	// 			fill: '#ffffff',
+	// 			stroke: "#ff0000",
+	// 			opacity: 1,
+	// 			scalable: true,
+	// 			src: "https://success-office.truecdn.beta/image/fav.png",
+	// 			type: MyLibrary.ShapeType.IMAGE,
+	// 		},
+	// 	},
+	// 	type: MyLibrary.CommandType.CREATION,
+	// 	mergeable: false,
+	// };
+	// command = MyLibrary.CommandFactory.create(application, props);
+	// command.execute();
+
+	// props = {
+	// 	component_id: MyLibrary.uuid(),
+	// 	action: null,
+	// 	data: {
+	// 		shape: {
+	// 			x: 300,
+	// 			y: 300,
+	// 			width: 200,
+	// 			height: 100,
+	// 			angle: 0,
+	// 			fill: '#efeefe',
+	// 			stroke: "#ffe00f",
+	// 			opacity: 1,
+	// 			scalable: true,
+	// 			type: MyLibrary.ShapeType.RECTANGLE,
+	// 		},
+	// 	},
+	// 	type: MyLibrary.CommandType.CREATION,
+	// 	mergeable: false,
+	// };
+	// command = MyLibrary.CommandFactory.create(application, props);
+	// command.execute();
+
+	// props = {
+	// 	component_id: MyLibrary.uuid(),
+	// 	action: null,
+	// 	data: {
+	// 		shape: {
+	// 			x: 300,
+	// 			y: 100,
+	// 			width: 200,
+	// 			height: 100,
+	// 			angle: 4*Math.PI/3,
+	// 			fill: '#e00fff',
+	// 			stroke: "#ff0000",
+	// 			opacity: 1,
+	// 			scalable: true,
+	// 			type: MyLibrary.ShapeType.RECTANGLE,
+	// 		},
+	// 	},
+	// 	type: MyLibrary.CommandType.CREATION,
+	// 	mergeable: false,
+	// };
+	// command = MyLibrary.CommandFactory.create(application, props);
+	// command.execute();
+</script>

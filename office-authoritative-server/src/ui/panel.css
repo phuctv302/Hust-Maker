@@ -1,0 +1,6 @@
+
+.react-panel {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+}

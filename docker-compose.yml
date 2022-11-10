@@ -1,0 +1,94 @@
+version: '3'
+
+
+services:
+  office_socket_server:
+    image: office_socket_server:0.1-alpine
+    container_name: office_socket_server
+    build:
+      context: ./office-socket-server
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - app-tier
+    depends_on:
+      - kafka
+      - redis
+  office_authoritative_server:
+    image: office_authoritative_server:0.1-alpine
+    container_name: office_authoritative_server
+    build:
+      context: ./office-authoritative-server
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - app-tier
+    depends_on:
+      - office_socket_server
+      - kafka
+      - redis
+      - db
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - app-tier
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    networks:
+      - app-tier
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - data-volume:/data
+    networks:
+      - app-tier
+  db:
+    image: mariadb:latest
+    container_name: db
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    networks:
+      - app-tier
+    volumes:
+      - data-volume:/var/lib/mysql
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8082:8080"
+    networks:
+      - app-tier
+
+
+networks:
+  app-tier:
+    external: true
+
+
+volumes:
+  data-volume:
+    driver: local
+
+
